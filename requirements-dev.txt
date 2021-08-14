@@ -29,3 +29,5 @@ static3==0.7.0
 urllib3==1.25.10
 zipp==3.3.0
 django-cors-headers
+
+
