@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'corsheaders',
     'usuarios',
-    'gestao_de_vendas',
 ]
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y', '%Y-%m-%d')
