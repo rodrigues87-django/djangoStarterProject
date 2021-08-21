@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from usuarios.views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', list_usuarios, name='list_usuarios'),
@@ -10,7 +11,6 @@ urlpatterns = [
     path('login/', login_user),
     path('login/submit', submit_login),
     path('login/submit_login_google', submit_login_google),
-
     path('logout/', logout),
 
 ]

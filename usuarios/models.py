@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import AbstractUser, BaseUserManager, Group
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -56,3 +57,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.first_name
+
+    def login(self, request):
+        user = authenticate(username=self.email, password=self.password)
+        if user is not None:
+            return False
+        else:
+            login(request, user)
+            return True

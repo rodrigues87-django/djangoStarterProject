@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as django_logout
+from django.views.generic import CreateView
 
 from usuarios.forms import UserForm
 from usuarios.models import User
@@ -16,6 +17,32 @@ from .models import User
 from usuarios.api.serializers import UsuariosSerializer
 
 
+def chekLoginView(request):
+    if request.user.is_authenticated:
+        return render(request, 'base.html')
+    else:
+        return redirect(login_user)
+
+
+def login_user(request):
+    return render(request, 'auth-login.html')
+
+
+@csrf_protect
+def submit_login(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.error(request, "Usuário e senha inválido. Favor tentar novamente.")
+            return redirect('/usuarios/login')
+
+
 class UserCreateAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UsuariosSerializer
@@ -24,26 +51,6 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 def base(request):
     return render(request, 'base.html')
-
-
-def login_user(request):
-    return render(request, 'login.html')
-
-
-@csrf_protect
-def submit_login(request):
-    if request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        print(username)
-        print(password)
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/')
-        else:
-            messages.error(request, "Usuário e senha inválido. Favor tentar novamente.")
-            return redirect('/usuarios/login')
 
 
 @csrf_protect
@@ -73,13 +80,6 @@ def submit_login_google(request):
 
     print("não entrou no post")
     return redirect('/')
-
-
-def administrador(request):
-    if request.user.is_authenticated:
-        return render(request, 'index.html')
-    else:
-        return redirect('/pedidos/solicitar')
 
 
 @login_required
