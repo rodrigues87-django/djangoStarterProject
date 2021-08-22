@@ -24,13 +24,23 @@
                 <h1 class="auth-title">Inserir codico de confirmação</h1>
                 <p class="auth-subtitle mb-5">Verifique o código de confirmação enviado para o email</p>
 
-                <form action="index.html">
+                <form action="submit" method="POST" class="login-form">{% csrf_token %}
+
                     <div class="form-group position-relative has-icon-left mb-4">
-                        <input type="text" class="form-control form-control-xl" placeholder="Código">
+                        <input type="text" name="code" class="form-control form-control-xl" placeholder="Código">
                         <div class="form-control-icon">
                             <i class="bi bi-code"></i>
                         </div>
                     </div>
+                    {% for message in messages %}
+
+                        <div class="alert alert-danger">
+                            <a class="close" href="#" data-dismiss="alert">×</a>
+
+                            {{ message }}
+
+                        </div>
+                    {% endfor %}
                     <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Verificar</button>
                 </form>
                 <div class="text-center mt-5 text-lg fs-4">

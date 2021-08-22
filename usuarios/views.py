@@ -70,21 +70,42 @@ def submit_register(request):
             messages.error(request, "senhas nao conferem")
             return redirect('/usuarios/register/')
 
+        correio_eletronico = CorreioEletronico()
+        correio_eletronico.enviar_correio_eletronico(username)
+
         user = authenticate(username=username, password=password)
         if user is not None:
-            login(request, user)
-            return redirect(chekLoginView)
-        else:
+            if user.is_active:
+                login(request, user)
+                return redirect(chekLoginView)
+            else:
+                return redirect(confirmation_code, username)
 
-            correio_eletronico = CorreioEletronico()
+        user = User.objects.create_user(username,password)
+        user.is_active = False
+        return redirect(confirmation_code, username)
 
-            correio_eletronico.enviar_correio_eletronico(username)
 
-            return redirect(confirmation_code)
 
 @login_exempt
-def confirmation_code(request):
-    return render(request, 'confirmation_code.html')
+def confirmation_code(request, username):
+    return render(request, 'confirmation_code.html', {'username': username})
+
+
+@login_exempt
+@csrf_protect
+def confirmation_code_submit(request, username):
+    code = request.POST.get('code')
+
+    try:
+        CorreioEletronico.objects.get(codigo_verificador=code, destino=username)
+        user = User.objects.get(email=username)
+        user.is_active = True
+        return redirect(login_user)
+
+    except CorreioEletronico.DoesNotExist:
+        messages.error(request,"Codigo inválido")
+        return redirect(confirmation_code, username)
 
 
 class UserCreateAPIView(generics.CreateAPIView):

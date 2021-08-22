@@ -13,7 +13,9 @@ urlpatterns = [
     path('login/forgot/', forgot_password),
     path('register/', register),
     path('register/submit', submit_register),
-    path('register/code/', confirmation_code),
+
+    path('register/code/<str:username>/submit', confirmation_code_submit),
+    path('register/code/<str:username>/', confirmation_code),
 
     path('login/submit_login_google', submit_login_google),
 
