@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as django_logout
 from django.views.generic import CreateView
 
+from correio_eletronico.models import CorreioEletronico
 from usuarios.forms import UserForm
 from usuarios.models import User
 
@@ -16,10 +17,12 @@ from rest_framework.permissions import AllowAny
 from .models import User
 from usuarios.api.serializers import UsuariosSerializer
 from middlewares.loginMiddleware import login_exempt
+from django.core.mail import send_mail
 
 
 def index(request):
     return render(request, 'dashboard.html')
+
 
 @login_exempt
 def chekLoginView(request):
@@ -51,11 +54,31 @@ def submit_login(request):
 
 
 @login_exempt
-@csrf_protect
 def register(request):
-    if request.GET:
-        render(request, 'register.html')
+    return render(request, 'auth-register.html')
 
+
+@login_exempt
+@csrf_protect
+def submit_register(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect(chekLoginView)
+        else:
+
+            correio_eletronico = CorreioEletronico()
+
+            correio_eletronico.enviar_correio_eletronico(username)
+
+            return redirect('/usuarios/login')
+
+def confirmation_code(request):
+    return render(request, 'confirmation_code.html')
 
 class UserCreateAPIView(generics.CreateAPIView):
     queryset = User.objects.all()

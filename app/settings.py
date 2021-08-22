@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'corsheaders',
     'usuarios',
+    'email',
+    'correio_eletronico'
 ]
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y', '%Y-%m-%d')
@@ -55,6 +57,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 AUTH_USER_MODEL = 'usuarios.User'
 SITE_ID = 1
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

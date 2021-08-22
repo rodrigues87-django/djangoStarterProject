@@ -10,6 +10,9 @@ urlpatterns = [
     path('delete/<int:id>', delete_usuario, name='delete_usuario'),
     path('login/', login_user),
     path('login/submit', submit_login),
+    path('register/', register),
+    path('register/submit', submit_register),
+
     path('login/submit_login_google', submit_login_google),
 
 
