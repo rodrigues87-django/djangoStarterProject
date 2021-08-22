@@ -4,27 +4,21 @@
 
     <div class="sidebar-wrapper active" style="text-align:center">
         <a href="index.html">
-            <img src="{% static 'assets/images/logo/logo2.png' %}" alt="Logo" srcset="">
+            <img src="{% static 'assets/images/logo/logo.png' %}" alt="Logo" srcset="">
         </a>
         <div class="sidebar-menu">
             <ul class="menu">
 
                 <li {% if 'dashboard' in request.path %} class="sidebar-item active" {% else %}class="sidebar-item"{% endif %}>
-                    <a href="/dashboard/" class='sidebar-link'>
+                    <a href="/index/" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li {% if 'census' in request.path %} class="sidebar-item active" {% else %}class="sidebar-item"{% endif %}>
-                    <a href="/census/" class='sidebar-link'>
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Census</span>
-                    </a>
-                </li>
-                <li {% if 'previsoes' in request.path %} class="sidebar-item active" {% else %}class="sidebar-item"{% endif %}>
-                    <a href="/previsoes/" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>Previsões</span>
+                <li class="sidebar-item">
+                    <a href="/usuarios/logout/" class='sidebar-link'>
+                        <i class="bi bi-power"></i>
+                        <span>Sair</span>
                     </a>
                 </li>
                 <!--

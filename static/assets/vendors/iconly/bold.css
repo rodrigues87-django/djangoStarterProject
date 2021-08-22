@@ -1,3 +1,7 @@
+.iconly-boldActivity:before {
+  content: "\e900";
+}
+
 @font-face {
   font-family: 'Iconly---Bold';
   src:  url('fonts/Iconly---Bold.eot?jilz72');
@@ -25,9 +29,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.iconly-boldActivity:before {
-  content: "\e900";
-}
+
 .iconly-boldUser:before {
   content: "\e901";
 }

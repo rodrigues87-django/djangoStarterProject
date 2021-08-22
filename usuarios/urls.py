@@ -11,6 +11,8 @@ urlpatterns = [
     path('login/', login_user),
     path('login/submit', submit_login),
     path('login/submit_login_google', submit_login_google),
+
+
     path('logout/', logout),
 
 ]

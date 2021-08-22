@@ -11,7 +11,10 @@ body {
   background: url(../../images/bg/4853433.jpg), linear-gradient(90deg, #2d499d, #3f5491);
 }
 #auth #auth-left {
-  padding: 5rem 8rem;
+  padding-top: 0;
+  padding-right: 8rem;
+  padding-bottom: 8rem;
+  padding-left: 8rem;
 }
 #auth #auth-left .auth-title {
   font-size: 4rem;

@@ -15,19 +15,26 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from .models import User
 from usuarios.api.serializers import UsuariosSerializer
+from middlewares.loginMiddleware import login_exempt
 
 
+def index(request):
+    return render(request, 'dashboard.html')
+
+@login_exempt
 def chekLoginView(request):
     if request.user.is_authenticated:
-        return render(request, 'base.html')
+        return redirect(index)
     else:
         return redirect(login_user)
 
 
+@login_exempt
 def login_user(request):
     return render(request, 'auth-login.html')
 
 
+@login_exempt
 @csrf_protect
 def submit_login(request):
     if request.POST:
@@ -37,10 +44,17 @@ def submit_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/')
+            return redirect(chekLoginView)
         else:
             messages.error(request, "Usuário e senha inválido. Favor tentar novamente.")
             return redirect('/usuarios/login')
+
+
+@login_exempt
+@csrf_protect
+def register(request):
+    if request.GET:
+        render(request, 'register.html')
 
 
 class UserCreateAPIView(generics.CreateAPIView):
