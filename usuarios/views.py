@@ -45,12 +45,12 @@ def submit_login(request):
             return redirect(chekLoginView)
         else:
             messages.error(request, "Usuário e senha inválido. Favor tentar novamente.")
-            return redirect('/usuarios/login')
+            return redirect('/usuarios/login/')
 
 
 @login_exempt
 def forgot_password(request):
-    return render(request,'auth-forgot-password.html')
+    return render(request, 'auth-forgot-password.html')
 
 
 @login_exempt
@@ -66,7 +66,7 @@ def submit_register(request):
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
 
-        if password2 is not password:
+        if password2 != password:
             messages.error(request, "senhas nao conferem")
             return redirect('/usuarios/register/')
 
@@ -80,10 +80,12 @@ def submit_register(request):
 
             correio_eletronico.enviar_correio_eletronico(username)
 
-            return redirect('/usuarios/login')
+            return redirect(confirmation_code)
 
+@login_exempt
 def confirmation_code(request):
     return render(request, 'confirmation_code.html')
+
 
 class UserCreateAPIView(generics.CreateAPIView):
     queryset = User.objects.all()

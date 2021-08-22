@@ -1,9 +1,9 @@
 from django.db import models
 
 from usuarios.models import User
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.utils.crypto import get_random_string
-
+from django.conf import settings
 
 class CorreioEletronico(models.Model):
     destino = models.CharField(max_length=200)
@@ -15,18 +15,16 @@ class CorreioEletronico(models.Model):
         return self.destino
 
     def enviar_correio_eletronico(self, destino):
-        self.destino = destino
+        subject = 'Codigo de verificação'
         self.codigo_verificador = get_random_string(length=5)
-
         self.mensagem = "Seu código verificador é: " + str(self.codigo_verificador)
+        email_from = settings.DEFAULT_FROM_EMAIL
 
-        send_mail(
-            'Código de Confirmação',
-            self.mensagem,
-            'contato@fcred.com.br',
-            self.destino,
-            fail_silently=False,
-        )
+        self.destino = destino
+        recipient_list = [destino, ]
+
+        msg = EmailMessage(subject,self.mensagem , to=[self.destino])
+        msg.send()
 
         self.save()
 
