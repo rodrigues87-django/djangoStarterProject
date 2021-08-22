@@ -1,23 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
 from django.contrib.auth import logout as django_logout
-from django.views.generic import CreateView
-
-from correio_eletronico.models import CorreioEletronico
-from usuarios.forms import UserForm
-from usuarios.models import User
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 # Create your views here.
 from django.views.decorators.csrf import csrf_protect
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
-from .models import User
-from usuarios.api.serializers import UsuariosSerializer
+
+from correio_eletronico.models import CorreioEletronico
 from middlewares.loginMiddleware import login_exempt
-from django.core.mail import send_mail
+from usuarios.api.serializers import UsuariosSerializer
+from usuarios.forms import UserForm
+from .models import User
 
 
 def index(request):
@@ -54,6 +49,11 @@ def submit_login(request):
 
 
 @login_exempt
+def forgot_password(request):
+    return render(request,'auth-forgot-password.html')
+
+
+@login_exempt
 def register(request):
     return render(request, 'auth-register.html')
 
@@ -64,6 +64,11 @@ def submit_register(request):
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+
+        if password2 is not password:
+            messages.error(request, "senhas nao conferem")
+            return redirect('/usuarios/register/')
 
         user = authenticate(username=username, password=password)
         if user is not None:

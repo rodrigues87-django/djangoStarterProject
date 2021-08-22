@@ -18,13 +18,22 @@
 
     <div class="row h-100">
         <div class="col-lg-5 col-12">
-            <div id="auth-left" style="padding-top: 0">
-                <a href="index.html">
-                    <div class="text-center">
-                        <img src="{% static "assets/images/logo/logo.png" %}" alt="Logo">
+            <div id="auth-left">
+                <div class="row">
+                    <div class="col-sm">
+                        <h1 class="auth-title" style="margin-top: 5rem">Registro</h1>
+
+
                     </div>
-                </a>
-                <h1 class="auth-title">Sign Up</h1>
+                    <div class="col-sm">
+                        <a href="index.html">
+                            <div class="text-center">
+                                <img src="{% static "assets/images/logo/logo.png" %}" alt="Logo">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
 
                 <form action="submit" method="POST" class="login-form">{% csrf_token %}
                     <div class="form-group position-relative has-icon-left mb-4">
@@ -39,13 +48,26 @@
                             <i class="bi bi-shield-lock"></i>
                         </div>
                     </div>
+
                     <div class="form-group position-relative has-icon-left mb-4">
-                        <input type="password" class="form-control form-control-xl" name="password2" placeholder="Confirm Password">
+                        <input type="password" class="form-control form-control-xl" name="password2"
+                               placeholder="Confirm Password">
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Sign Up</button>
+
+                    {% for message in messages %}
+
+                        <div class="alert alert-danger">
+                            <a class="close" href="#" data-dismiss="alert">×</a>
+
+                            {{ message }}
+
+                        </div>
+                    {% endfor %}
+
+                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Registrar</button>
                 </form>
                 <div class="text-center mt-5 text-lg fs-4">
                     <p class='text-gray-600'>Já tem uma conta? <a href="/usuarios/login/" class="font-bold">Log
